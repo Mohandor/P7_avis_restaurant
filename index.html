@@ -5,6 +5,7 @@
         <meta charset="utf-8"> 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/materialize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <title>Avis de Restaurant</title>
@@ -12,12 +13,13 @@
 
     <body>
         <div class="row">
-            <div class="col s3" id="restaurantInfoCol"></div>
+            <ul class="col s3 collapsible" data-collapsible="accordion" id="restaurantInfoCol"></ul>
             <div class="col s9" id="mapCol"></div>
         </div>
         
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/materialize.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
         <script src="js/initMap.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&callback=initMap"></script>
         <script src="js/marker.js"></script>
