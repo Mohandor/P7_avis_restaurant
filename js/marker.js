@@ -31,8 +31,8 @@ function addRestaurant(ceRestau, nbMarker){
 }
 
 function addRestaurantRatings(ratings, nbMarker){
-    $('<div/>').addClass('col s3').text(ratings.stars).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
-    $('<div/>').addClass('col s9').text(ratings.comment).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
+    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 10}).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
+    $('<div/>').addClass('col s8').text(ratings.comment).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
 
 }
 
@@ -48,7 +48,11 @@ $.getJSON('data/test.json', function(data){
             sumRatings = this.stars + sumRatings;
         });
         var avgRatings = sumRatings/this.ratings.length;
-        $('#ratingsRestaurant'+nbMarker).rateYo({rating: avgRatings});
+        $('#ratingsRestaurant'+nbMarker).starRating({
+            initialRating: avgRatings,
+            readOnly: true,
+            starSize: 20
+        });
     });
 });
 
