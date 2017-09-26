@@ -1,3 +1,7 @@
  #mapCol {
    	height: 100vh;
 }
+
+.row .col.s3.padding0 {
+	padding: 0;
+}

@@ -31,7 +31,7 @@ function addRestaurant(ceRestau, nbMarker){
 }
 
 function addRestaurantRatings(ratings, nbMarker){
-    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 10}).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
+    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 15}).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
 
 }
