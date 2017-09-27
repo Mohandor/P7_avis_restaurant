@@ -35,8 +35,7 @@ var starSelect = {
 			var maxStar = Number($('#starMax').starRating('getRating')); // Note maximale
 			// On ajoute une classe 'hide' au restaurant si il n'est pas dans la fourchette et on l'enlève si il est dedans et qu'il l'a
 			$('li').each(function(index){
-				var nbMarker = (index+1).toString();
-				var thatStartRating =Number($('#ratingsRestaurant'+nbMarker).starRating('getRating'));
+				var thatStartRating =Number($(this).find('.restaurantAvgRating').starRating('getRating'));
 				if (thatStartRating<minStar || thatStartRating>maxStar){
 					$(this).addClass('hide');
 					markers[index].setVisible(false);
