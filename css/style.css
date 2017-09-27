@@ -5,3 +5,12 @@
 .row .col.s3.padding0 {
 	padding: 0;
 }
+
+.row .col.S4.streetview{
+	width: 100%;
+	height: auto;
+}
+
+.streetview{
+	width: 100%;
+}

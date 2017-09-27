@@ -1,8 +1,8 @@
 var starSelect = {
 	// Fonction créant l'outil permettant le tri des restaurants en fonctions des notes
 	init: function(){
-		$('<div/>').addClass('row').attr('id', 'starSelectRow').appendTo($('#starSelection')); // Création d'une row en haut de notre colonne de gauche
-		$('<div/>').addClass('col s12 center-align').text('Ne montrer que les restaurants compris dans cette fourchette').appendTo($('#starSelectRow'));
+		var starSelectRow = $('<div/>').addClass('row').appendTo($('#starSelection')); // Création d'une row en haut de notre colonne de gauche
+		$('<div/>').addClass('col s12 center-align').text('Ne montrer que les restaurants compris dans cette fourchette').appendTo(starSelectRow);
 		// Création d'une div avec un starRating pour la note minime qui est de base à 0 et ne peut jamais être supérieur à la note max
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMin').starRating({
 			initialRating: 0,
@@ -13,7 +13,7 @@ var starSelect = {
 					$('#starMax').starRating('setRating', currentRating);
 				}
 			}
-		}).appendTo($('#starSelectRow'));
+		}).appendTo(starSelectRow);
 		// Création d'une div avec un starRating pour la note maximale qui est de base à 5 et ne peut jamais être inférieur à la note min
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMax').starRating({
 			initialRating: 5,
@@ -24,9 +24,9 @@ var starSelect = {
 					$('#starMin').starRating('setRating', currentRating);
 				}
 			}
-		}).appendTo($('#starSelectRow'));
+		}).appendTo(starSelectRow);
 		// Ajout du bouton pour effectuer le tri
-		$('<a/>').addClass('waves-effect waves-light btn center').attr('id', "btnStarSelect").text('Classer').appendTo($('#starSelectRow'));
+		$('<a/>').addClass('waves-effect waves-light btn center').attr('id', "btnStarSelect").text('Classer').appendTo(starSelectRow);
 		$('<i/>').addClass('material-icons right').text('restaurant').appendTo($('#btnStarSelect'));
 
 		// Fonction de l'event quand on clique sur le bouton
@@ -39,8 +39,12 @@ var starSelect = {
 				var thatStartRating =Number($('#ratingsRestaurant'+nbMarker).starRating('getRating'));
 				if (thatStartRating<minStar || thatStartRating>maxStar){
 					$(this).addClass('hide');
+					markers[index].setVisible(false);
 				} else{
-					if($(this).hasClass('hide')){$(this).removeClass('hide')};
+					if($(this).hasClass('hide')){
+						$(this).removeClass('hide');
+						markers[index].setVisible(true);
+					};
 				}
 			});
 		});

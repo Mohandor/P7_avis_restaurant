@@ -1,3 +1,5 @@
+var markers = new Array();
+
 // Fonction qui permet d'ajouter un marker avec la lat(a), la long(b), un label(c) et le nom du restaurant(d)
 function addMarker(a,b,c, d){
     var markerPosition = {lat: a, lng: b};
@@ -8,36 +10,38 @@ function addMarker(a,b,c, d){
         id: c,
         map: map
     });
+    markers.push(marker);
 }
 
 // Fonction permettant l'ajout d'un restaurant dans une <li>
-function addRestaurant(ceRestau, nbMarker){
-    $('<li/>').addClass('row').attr('id', "restaurant"+nbMarker).appendTo($("#restaurantInfoCol")); // Création d'une li qui va dans l'ul #restaurantInfoCol
+function addRestaurant(thatRestau, nbMarker){
+    var li = $('<li/>').addClass('row').appendTo($("ul")); // Création d'une li qui va dans l'ul
 
     // Création de la div collapsible-header avec les informations du restaurant
-    $('<div/>').addClass('collapsible-header').attr('id', 'infoRestaurantHeader'+nbMarker).appendTo($("#"+"restaurant"+nbMarker));
-    $('<div/>').addClass('col s8').attr('id', "infoRestaurant"+nbMarker).appendTo($("#infoRestaurantHeader"+nbMarker));
-    $('<div/>').addClass('row').attr('id',"infoRestaurant"+nbMarker+"Col").appendTo($("#infoRestaurant"+nbMarker));
-    $('<div/>').addClass('col s1').text(nbMarker).appendTo($("#"+"infoRestaurant"+nbMarker+"Col"));
-    $('<div/>').addClass('col s10').text(ceRestau.restaurantName).appendTo($("#infoRestaurant"+nbMarker+"Col"));
-    $('<div/>').addClass('col s12').text(ceRestau.address).appendTo($("#infoRestaurant"+nbMarker+"Col"));
-    $('<div/>').addClass('col s12').attr('id','ratingsRestaurant'+nbMarker).appendTo($("#infoRestaurant"+nbMarker+"Col"));
+    var liHeader = $('<div/>').addClass('collapsible-header').appendTo(li);
+    var leftCol = $('<div/>').addClass('col s8').attr('id', "infoRestaurant"+nbMarker).appendTo(liHeader);
+    var leftRow = $('<div/>').addClass('row').appendTo(leftCol);
+    $('<div/>').addClass('col s1').text(nbMarker).appendTo(leftRow);
+    $('<div/>').addClass('col s10').text(thatRestau.restaurantName).appendTo(leftRow);
+    $('<div/>').addClass('col s12').text(thatRestau.address).appendTo(leftRow);
+    $('<div/>').addClass('col s12 restaurantAvgRating').appendTo(leftRow);
 
     // Ajout de l'image google street aux coordonnées qui va dans l'header
-    var restaurantLocation = "location="+ceRestau.lat+","+ceRestau.long;
-    $('<div/>').addClass('col s4').attr('id', 'streetviewRestaurant'+nbMarker).appendTo($("#infoRestaurantHeader"+nbMarker));
-    $('<img>').addClass('col s12').attr('src', '//maps.googleapis.com/maps/api/streetview?size=400x400&key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&'+restaurantLocation).appendTo($("#"+"streetviewRestaurant"+nbMarker));
+    var restaurantLocation = "location="+thatRestau.lat+","+thatRestau.long;
+    var rightCol = $('<div/>').addClass('col s4 valign-wrapper').appendTo(liHeader);
+    $('<img>').addClass('streetview').attr('src', '//maps.googleapis.com/maps/api/streetview?size=400x400&key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&'+restaurantLocation).appendTo(rightCol);
    
     // Ajout du body de notre collapsible pour les notes
-    $('<div/>').addClass('col s12').addClass('collapsible-body').attr('id', "restaurant"+nbMarker+"Ratings").appendTo($("#restaurant"+nbMarker));
-    $('<div/>').addClass('row').attr('id', "restaurant"+nbMarker+"RatingsRow").appendTo($("#restaurant"+nbMarker+"Ratings"));
+    var liBody = $('<div/>').addClass('col s12').addClass('collapsible-body').appendTo(li);
+    $('<div/>').addClass('row restaurantRatings').appendTo(liBody);
 
 }
 
 // Fonction permettant l'ajout des avis avec un objet ratings et un identifiant(nbMarker)
-function addRestaurantRatings(ratings, nbMarker){
-    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
-    $('<div/>').addClass('col s8').text(ratings.comment).appendTo($('#restaurant'+nbMarker+'RatingsRow'));
+function addRestaurantRatings(ratings, indexLi){
+    var rowRestaurantRatings = $('li:nth-child('+indexLi+')').find('.restaurantRatings');
+    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(rowRestaurantRatings);
+    $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
 
 }
 
@@ -53,7 +57,7 @@ $.getJSON('data/test.json', function(data){
             sumRatings = this.stars + sumRatings; // On ajout les notes à sumRatings
         });
         var avgRatings = sumRatings/this.ratings.length; // Calcul de la note moyenne
-        $('#ratingsRestaurant'+nbMarker).starRating({ // Ajout de la note moyenne à ce restaurant
+        $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
             initialRating: avgRatings,
             readOnly: true,
             starSize: 20
