@@ -36,8 +36,8 @@
    {
       "restaurantName":"Restaurant 52",
       "address":"52 Rue du Faubourg Saint-Denis, 75010 Paris",
-      "lat":48.871977,
-      "long":2.354620,
+      "lat":48.872039, 
+      "long":2.354093,
       "ratings":[
          {
             "stars":4,
