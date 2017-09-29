@@ -38,7 +38,7 @@ function addRestaurant(thatRestau, nbMarker){
 }
 
 // Fonction permettant l'ajout des avis avec un objet ratings et un identifiant(nbMarker)
-function addRestaurantRatings(ratings, indexLi){
+function addRestaurantRatings(ratings, nthChildLi){
     var rowRestaurantRatings = $('li:nth-child('+indexLi+')').find('.restaurantRatings');
     $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(rowRestaurantRatings);
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
@@ -65,3 +65,15 @@ $.getJSON('data/test.json', function(data){
     });
 });
 
+// Fonction permettant de retirers les restaurants de la liste et marker de la carte si ils ne sont pas sur la map affichée et vis versa
+map.addListener('bounds_changed', function(){ // Quand les limites de la map change
+    $.each(markers, function (index, marker){ // Pour chaque markers
+        if(map.getBounds().contains(marker.getPosition()) && marker.getVisible()){ // Si le marker est sur la map et qu'il est visible
+            marker.getVisible(true);
+            $('li:nth-child('+(index+1)+')').removeClass('hide');
+        } else { // Sinon
+            marker.getVisible(false);
+            $('li:nth-child('+(index+1)+')').addClass('hide');
+        }
+    });  
+});
