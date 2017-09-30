@@ -36,11 +36,11 @@ var starSelect = {
 			// On ajoute une classe 'hide' au restaurant si il n'est pas dans la fourchette et on l'enlève si il est dedans et qu'il l'a
 			$('li').each(function(index){
 				var thatStartRating =Number($(this).find('.restaurantAvgRating').starRating('getRating'));
-				if (thatStartRating<minStar || thatStartRating>maxStar){
+				if ((thatStartRating<minStar || thatStartRating>maxStar)){
 					$(this).addClass('hide');
 					markers[index].setVisible(false);
 				} else{
-					if($(this).hasClass('hide')){
+					if($(this).hasClass('hide') && map.getBounds().contains(markers[index].getPosition())){
 						$(this).removeClass('hide');
 						markers[index].setVisible(true);
 					};

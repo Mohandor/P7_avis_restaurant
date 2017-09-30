@@ -1,16 +1,18 @@
 var markers = new Array();
 
 // Fonction qui permet d'ajouter un marker avec la lat(a), la long(b), un label(c) et le nom du restaurant(d)
-function addMarker(a,b,c, d){
+function addMarker(a,b,c, d, e){
     var markerPosition = {lat: a, lng: b};
     var marker = new google.maps.Marker({
         position: markerPosition,
         label: c,
         title: d,
-        id: c,
         map: map
     });
     markers.push(marker);
+    marker.addListener('click', function(){
+    $('.collapsible').collapsible('open', e);
+});
 }
 
 // Fonction permettant l'ajout d'un restaurant dans une <li>
@@ -39,7 +41,7 @@ function addRestaurant(thatRestau, nbMarker){
 
 // Fonction permettant l'ajout des avis avec un objet ratings et un identifiant(nbMarker)
 function addRestaurantRatings(ratings, nthChildLi){
-    var rowRestaurantRatings = $('li:nth-child('+indexLi+')').find('.restaurantRatings');
+    var rowRestaurantRatings = $('li:nth-child('+nthChildLi+')').find('.restaurantRatings');
     $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(rowRestaurantRatings);
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
 
@@ -49,7 +51,7 @@ function addRestaurantRatings(ratings, nthChildLi){
 $.getJSON('data/test.json', function(data){ 
     $.each(data, function(index){ // Pour chaque objet dans notre fichier
         var nbMarker = (index+1).toString(); // On définit l'id
-        addMarker(this.lat, this.long, nbMarker, this.restaurantName); // On ajoute le marker sur la map
+        addMarker(this.lat, this.long, nbMarker, this.restaurantName, index); // On ajoute le marker sur la map
         addRestaurant(this, nbMarker); // On ajoute le restaurant sur notre colonne à gauche
         var sumRatings = 0; // On définit la variable de total des avis à 0
         $.each(this.ratings, function(){ // Pour chaque objet ratings de chaque data 

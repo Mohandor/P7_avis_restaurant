@@ -1,4 +1,4 @@
-var map, marker;
+var map;
 
 function initMap(){
 	var OCPosition = {lat: 48.8747648, lng: 2.348376};
