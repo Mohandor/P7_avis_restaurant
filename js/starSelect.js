@@ -49,5 +49,3 @@ var starSelect = {
 		});
 	}
 }
-
-starSelect.init(); // Call de la fonction
