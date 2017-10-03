@@ -18,4 +18,32 @@ $.getJSON('data/test.json', function(data){
             starSize: 20
         });
     });
+	addNewRating();
+});
+
+var liIndex;
+$('.btnNewRating').on('click', function(){
+    liIndex = $(this).closest('li').index();
+    console.log(liIndex);
+});
+
+$(document).ready(function(){
+	$('#starsForm').starRating({initialRating: 0, starSize: 25, disableAfterRate: false});
+    $('#modal1').modal({
+    	ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+        var blabla = $(trigger).closest('li').index();
+        console.log(blabla);
+      	},
+      	complete: function() {} // Callback for Modal close
+   });
+});
+
+$('#formRating').submit(function(){
+	$('#modal1').modal('close');
+	var stars = Number($('#starsForm').starRating('getRating'));
+	var comment = $('#newRatingForm').val();
+	var rating = new createNewRating(stars, comment);
+	console.log(rating);
+	$('#starsForm').starRating('setRating', 0);
+	$('#newRatingForm').val('');
 });

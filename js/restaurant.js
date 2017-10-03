@@ -10,6 +10,10 @@ function addRestaurant(thatRestau, nbMarker){
     $('<div/>').addClass('col s10').text(thatRestau.restaurantName).appendTo(leftRow);
     $('<div/>').addClass('col s12').text(thatRestau.address).appendTo(leftRow);
     $('<div/>').addClass('col s12 restaurantAvgRating').appendTo(leftRow);
+    var newRating = $('<div/>').addClass('col s12 newRating').appendTo(leftRow);
+    var btnNewRating = $('<a/>').addClass('waves-effect waves-light btn btnNewRating modal-trigger').attr('href', '#modal1').appendTo(newRating);
+    $('<i/>').addClass('material-icons').text('add').appendTo(btnNewRating);
+
 
     // Ajout de l'image google street aux coordonnées qui va dans l'header
     var restaurantLocation = "location="+thatRestau.lat+","+thatRestau.long;
@@ -20,6 +24,7 @@ function addRestaurant(thatRestau, nbMarker){
     var liBody = $('<div/>').addClass('col s12').addClass('collapsible-body').appendTo(li);
     $('<div/>').addClass('row restaurantRatings').appendTo(liBody);
 
+
 }
 
 // Fonction permettant l'ajout des avis avec un objet ratings et un identifiant(nbMarker)
@@ -27,4 +32,23 @@ function addRestaurantRatings(ratings, nthChildLi){
     var rowRestaurantRatings = $('li:nth-child('+nthChildLi+')').find('.restaurantRatings');
     $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(rowRestaurantRatings);
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
+}
+
+function addNewRating(){
+    $('.btnNewRating').on('click', function(){
+        var liIndex = $(this).closest('li').index();
+    });
+}
+
+
+function createNewRestaurant(restaurantName, adress, lat, long) {
+   this.restaurantName = restaurantName;
+   this.adress = adress;
+   this.lat = lat;
+   this.long = long;
+}
+
+function createNewRating(stars, comment){
+    this.stars = stars;
+    this.comment = comment;
 }

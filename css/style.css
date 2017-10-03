@@ -14,3 +14,11 @@
 .streetview{
 	width: 100%;
 }
+
+.collapsible-header i{
+	margin: 0;
+}
+
+.btn {
+	padding: 0 1rem;
+}
