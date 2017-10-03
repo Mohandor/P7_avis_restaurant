@@ -34,13 +34,6 @@ function addRestaurantRatings(ratings, nthChildLi){
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
 }
 
-function addNewRating(){
-    $('.btnNewRating').on('click', function(){
-        var liIndex = $(this).closest('li').index();
-    });
-}
-
-
 function createNewRestaurant(restaurantName, adress, lat, long) {
    this.restaurantName = restaurantName;
    this.adress = adress;
@@ -51,4 +44,16 @@ function createNewRestaurant(restaurantName, adress, lat, long) {
 function createNewRating(stars, comment){
     this.stars = stars;
     this.comment = comment;
+}
+
+function addnewRestaurantRatings(){
+    $('#modal1').modal('close');
+    var stars = Number($('#starsForm').starRating('getRating'));
+    var comment = $('#newRatingForm').val();
+    var rating = new createNewRating(stars, comment);
+    console.log(rating);
+    console.log(liIndex);
+    addRestaurantRatings(rating, (liIndex+1));
+    $('#starsForm').starRating('setRating', 0);
+    $('#newRatingForm').val('');
 }

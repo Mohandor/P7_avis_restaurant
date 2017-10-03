@@ -18,32 +18,36 @@ $.getJSON('data/test.json', function(data){
             starSize: 20
         });
     });
-	addNewRating();
 });
 
-var liIndex;
-$('.btnNewRating').on('click', function(){
-    liIndex = $(this).closest('li').index();
-    console.log(liIndex);
-});
+var liIndex = '';
 
 $(document).ready(function(){
-	$('#starsForm').starRating({initialRating: 0, starSize: 25, disableAfterRate: false});
+	$('#starsForm').starRating({initialRating: 2.5, starSize: 25, disableAfterRate: false});
     $('#modal1').modal({
     	ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-        var blabla = $(trigger).closest('li').index();
-        console.log(blabla);
-      	},
-      	complete: function() {} // Callback for Modal close
-   });
+        liIndex = $(trigger).closest('li').index();
+        return liIndex;
+      	}
+	});
 });
 
 $('#formRating').submit(function(){
-	$('#modal1').modal('close');
-	var stars = Number($('#starsForm').starRating('getRating'));
-	var comment = $('#newRatingForm').val();
-	var rating = new createNewRating(stars, comment);
-	console.log(rating);
-	$('#starsForm').starRating('setRating', 0);
-	$('#newRatingForm').val('');
+	$('#modal1').modal('close'); // On ferme le modal
+	var stars = Number($('#starsForm').starRating('getRating')); // On prend la valeur du nouvel avis
+	var comment = $('#newRatingForm').val(); // On prend la val du commentaire
+	var rating = new createNewRating(stars, comment); // On créait un objet rating avec ces valeus
+	addRestaurantRatings(rating, (liIndex+1)); // On ajoute ce nouvel avis au restaurant correspondant
+	$('#starsForm').starRating('setRating', 2.5); // On remet la valeur de base du starRating à 2.5
+	$('#newRatingForm').val(''); // On remet la valeur de l'input du formulaire en vide
+
+	// On recalcule la nouvelle moyenne du restaurant et on met à jours le starRating
+	var sumRatings = 0; 
+	$('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').each(function(){
+		sumRatings = sumRatings + Number($(this).starRating('getRating'));
+	})
+	// On arrondi à 0.5 car le plugin ne supporte que des entiers et demis. 
+	var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').length))/2;
+	$('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
 });
+
