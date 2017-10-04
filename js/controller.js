@@ -30,12 +30,13 @@ $(document).ready(function(){
         return liIndex;
       	}
 	});
+	$('#modal2').modal();
 });
 
 $('#formRating').submit(function(){
 	$('#modal1').modal('close'); // On ferme le modal
 	var stars = Number($('#starsForm').starRating('getRating')); // On prend la valeur du nouvel avis
-	var comment = $('#newRatingForm').val(); // On prend la val du commentaire
+	var comment = $('#newRatingForm').val(); // On prend la val de l'input
 	var rating = new createNewRating(stars, comment); // On créait un objet rating avec ces valeus
 	addRestaurantRatings(rating, (liIndex+1)); // On ajoute ce nouvel avis au restaurant correspondant
 	$('#starsForm').starRating('setRating', 2.5); // On remet la valeur de base du starRating à 2.5
@@ -51,3 +52,33 @@ $('#formRating').submit(function(){
 	$('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
 });
 
+$('#formRestaurant').submit(function(){
+	$('#modal2').modal('close'); // On ferme le modal
+	var restaurantName = $('#newRestaurantName').val(); // On prend la val de l'input
+	var address = $('#newRestaurantAddress').val(); // On prend la val de l'input
+
+	function codeAddress(restaurantName, address){
+		geocoder.geocode( { 'address': address}, function(results, status) {
+      		if (status == 'OK') {
+      			var lat = results[0].geometry.location.lat();
+      			var long = results[0].geometry.location.lng();
+      			var newRestaurant = new createNewRestaurant(restaurantName, address, lat, long);
+ 				var indexLi = $('li').length;
+ 				addRestaurant(newRestaurant, (indexLi+1));
+ 				addMarker(newRestaurant.lat, newRestaurant.long, (indexLi+1).toString(), newRestaurant.restaurantName, indexLi);
+ 				$('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
+		            initialRating: 0,
+		            readOnly: true,
+		            starSize: 20
+	      		});
+	      		} else {
+        		alert('Geocode was not successful for the following reason: ' + status);
+      		}
+   		});
+ 	}
+ 	codeAddress(restaurantName,address);
+
+	$('#newRestaurantName').val('');
+	$('#newRestaurantAddress').val('');
+
+});

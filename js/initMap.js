@@ -1,4 +1,4 @@
-var map;
+var map, geocoder;
 
 function initMap(){
 	var OCPosition = {lat: 48.8747648, lng: 2.348376};
@@ -6,4 +6,5 @@ function initMap(){
 		zoom: 16,
 		center: OCPosition
 	});
+	geocoder = new google.maps.Geocoder();
 }

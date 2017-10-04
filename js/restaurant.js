@@ -34,9 +34,9 @@ function addRestaurantRatings(ratings, nthChildLi){
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
 }
 
-function createNewRestaurant(restaurantName, adress, lat, long) {
+function createNewRestaurant(restaurantName, address, lat, long) {
    this.restaurantName = restaurantName;
-   this.adress = adress;
+   this.address = address;
    this.lat = lat;
    this.long = long;
 }

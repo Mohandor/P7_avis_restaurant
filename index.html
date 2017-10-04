@@ -21,17 +21,6 @@
             </div>
             <div class="col s9" id="mapCol"></div>
         </div>
-<!--   <div id="modal1" class="modal">
-    <div class="modal-content">
-      <h4>Modal Header</h4>
-      <p>A bunch of text</p>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
-  </div>
-           -->
-        
 
         <div id="modal1" class="modal">
             <div class="modal-content">
@@ -50,6 +39,29 @@
             </div>
             <div class="modal-footer">
                 <button href="#!" type="submit" form="formRating" class="modal-action waves-effect waves-green btn-flat">Ajouter</a>
+            </div>
+        </div>
+
+        <div id="modal2" class="modal">
+            <div class="modal-content">
+                <h4>Ajouter un restaurant</h4>
+                <div class="row valign-wrapper">
+                    <form class="col s12" id="formRestaurant" onsubmit="return false">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="newRestaurantName" type="text" class="validate" required>
+                                <label for="newRestaurantName">Nom du restaurant</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input id="newRestaurantAddress" type="text" class="validate" required>
+                                <label for="newRestaurantAddress">Adresse du restaurant</label>
+                            </div>
+                        </div>     
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button href="#!" type="submit" form="formRestaurant" class="modal-action waves-effect waves-green btn-flat">Ajouter</a>
             </div>
         </div>
         
