@@ -4,7 +4,8 @@ starSelect.init();
 $.getJSON('data/test.json', function(data){ 
     $.each(data, function(index){ // Pour chaque objet dans notre fichier
         var nbMarker = (index+1).toString(); // On définit l'id
-        addMarker(this.lat, this.long, nbMarker, this.restaurantName, index); // On ajoute le marker sur la map
+        var markerPosition = {lat: this.lat, lng: this.long};
+        addMarker(markerPosition, nbMarker, this.restaurantName, index); // On ajoute le marker sur la map
         addRestaurant(this, nbMarker); // On ajoute le restaurant sur notre colonne à gauche
         var sumRatings = 0; // On définit la variable de total des avis à 0
         $.each(this.ratings, function(){ // Pour chaque objet ratings de chaque data 
@@ -20,17 +21,17 @@ $.getJSON('data/test.json', function(data){
     });
 });
 
+// On définit une variable liIndex et à chaque fois que l'on clique sur l'on trigger le modal 1 on modifie liIndex
 var liIndex = '';
-
 $(document).ready(function(){
 	$('#starsForm').starRating({initialRating: 2.5, starSize: 25, disableAfterRate: false});
     $('#modal1').modal({
-    	ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+    	ready: function(modal, trigger) { 
         liIndex = $(trigger).closest('li').index();
         return liIndex;
       	}
 	});
-	$('#modal2').modal();
+	$('#modal2').modal();// On active le modal2
 });
 
 $('#formRating').submit(function(){
@@ -47,38 +48,7 @@ $('#formRating').submit(function(){
 	$('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').each(function(){
 		sumRatings = sumRatings + Number($(this).starRating('getRating'));
 	})
-	// On arrondi à 0.5 car le plugin ne supporte que des entiers et demis. 
+	// On arrondi à 0.5 car le plugin ne supporte que des entiers et demis et on met à jours la note moyenne du restaurant
 	var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').length))/2;
 	$('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
-});
-
-$('#formRestaurant').submit(function(){
-	$('#modal2').modal('close'); // On ferme le modal
-	var restaurantName = $('#newRestaurantName').val(); // On prend la val de l'input
-	var address = $('#newRestaurantAddress').val(); // On prend la val de l'input
-
-	function codeAddress(restaurantName, address){
-		geocoder.geocode( { 'address': address}, function(results, status) {
-      		if (status == 'OK') {
-      			var lat = results[0].geometry.location.lat();
-      			var long = results[0].geometry.location.lng();
-      			var newRestaurant = new createNewRestaurant(restaurantName, address, lat, long);
- 				var indexLi = $('li').length;
- 				addRestaurant(newRestaurant, (indexLi+1));
- 				addMarker(newRestaurant.lat, newRestaurant.long, (indexLi+1).toString(), newRestaurant.restaurantName, indexLi);
- 				$('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
-		            initialRating: 0,
-		            readOnly: true,
-		            starSize: 20
-	      		});
-	      		} else {
-        		alert('Geocode was not successful for the following reason: ' + status);
-      		}
-   		});
- 	}
- 	codeAddress(restaurantName,address);
-
-	$('#newRestaurantName').val('');
-	$('#newRestaurantAddress').val('');
-
 });

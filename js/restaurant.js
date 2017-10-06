@@ -4,7 +4,7 @@ function addRestaurant(thatRestau, nbMarker){
 
     // Création de la div collapsible-header avec les informations du restaurant
     var liHeader = $('<div/>').addClass('collapsible-header').appendTo(li);
-    var leftCol = $('<div/>').addClass('col s8').attr('id', "infoRestaurant"+nbMarker).appendTo(liHeader);
+    var leftCol = $('<div/>').addClass('col s8').appendTo(liHeader);
     var leftRow = $('<div/>').addClass('row').appendTo(leftCol);
     $('<div/>').addClass('col s1').text(nbMarker).appendTo(leftRow);
     $('<div/>').addClass('col s10').text(thatRestau.restaurantName).appendTo(leftRow);

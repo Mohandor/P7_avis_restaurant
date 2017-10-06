@@ -29,9 +29,6 @@ var starSelect = {
 		var divBtnStarSelect = $('<div/>').addClass('col s12 center-align divBtnStarSelect').appendTo(starSelectRow);
 		$('<a/>').addClass('waves-effect waves-light btn').attr('id', "btnStarSelect").text('Classer').appendTo(divBtnStarSelect);
 		$('<i/>').addClass('material-icons right').text('restaurant').appendTo($('#btnStarSelect'));
-		var divBtnAddRestaurant = $('<div/>').addClass('col s12 center-align divBtnAddRestaurant').appendTo(starSelectRow);
-		var btnAddRestaurant = $('<a/>').addClass('waves-effect waves-light btn btnAddRestaurant modal-trigger').attr('href', '#modal2').text('Ajoutez un restaurant').appendTo(divBtnAddRestaurant);
-    	$('<i/>').addClass('material-icons right').text('add').appendTo(btnAddRestaurant);
 
 		// Fonction de l'event quand on clique sur le bouton
 		$('#btnStarSelect').on('click', function(){
@@ -46,6 +43,8 @@ var starSelect = {
 				} else{
 					if($(this).hasClass('hide') && map.getBounds().contains(markers[index].getPosition())){
 						$(this).removeClass('hide');
+						markers[index].setVisible(true);
+					}else if($(this).hasClass('hide')){
 						markers[index].setVisible(true);
 					};
 				}
