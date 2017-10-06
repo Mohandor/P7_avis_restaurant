@@ -21,34 +21,22 @@ $.getJSON('data/test.json', function(data){
     });
 });
 
-// On définit une variable liIndex et à chaque fois que l'on clique sur l'on trigger le modal 1 on modifie liIndex
+// On définit une variable liIndex
 var liIndex = '';
 $(document).ready(function(){
+	// On initie le rating du modal d'ajout d'avis à 2.5
 	$('#starsForm').starRating({initialRating: 2.5, starSize: 25, disableAfterRate: false});
+	// On active le #modal1 avec une fonction qui change la valeur du liIndex à chaque trigger
     $('#modal1').modal({
     	ready: function(modal, trigger) { 
         liIndex = $(trigger).closest('li').index();
-        return liIndex;
       	}
 	});
 	$('#modal2').modal();// On active le modal2
 });
 
+// Fonction qui permet l'ajout d'u avis quand on submit le formulaire du modal
 $('#formRating').submit(function(){
 	$('#modal1').modal('close'); // On ferme le modal
-	var stars = Number($('#starsForm').starRating('getRating')); // On prend la valeur du nouvel avis
-	var comment = $('#newRatingForm').val(); // On prend la val de l'input
-	var rating = new createNewRating(stars, comment); // On créait un objet rating avec ces valeus
-	addRestaurantRatings(rating, (liIndex+1)); // On ajoute ce nouvel avis au restaurant correspondant
-	$('#starsForm').starRating('setRating', 2.5); // On remet la valeur de base du starRating à 2.5
-	$('#newRatingForm').val(''); // On remet la valeur de l'input du formulaire en vide
-
-	// On recalcule la nouvelle moyenne du restaurant et on met à jours le starRating
-	var sumRatings = 0; 
-	$('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').each(function(){
-		sumRatings = sumRatings + Number($(this).starRating('getRating'));
-	})
-	// On arrondi à 0.5 car le plugin ne supporte que des entiers et demis et on met à jours la note moyenne du restaurant
-	var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').length))/2;
-	$('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
+	addnewRestaurantRatings(liIndex); // Fonction qui ajout l'avis dans la <li> correspondante
 });

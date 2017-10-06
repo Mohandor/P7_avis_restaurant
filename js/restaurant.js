@@ -34,6 +34,7 @@ function addRestaurantRatings(ratings, nthChildLi){
     $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
 }
 
+// Fonction permettant de créer un nouvel objet restaurant
 function createNewRestaurant(restaurantName, address, lat, long) {
    this.restaurantName = restaurantName;
    this.address = address;
@@ -41,19 +42,26 @@ function createNewRestaurant(restaurantName, address, lat, long) {
    this.long = long;
 }
 
+// Fonction permettant de créer un nouvel objet rating
 function createNewRating(stars, comment){
     this.stars = stars;
     this.comment = comment;
 }
 
-function addnewRestaurantRatings(){
-    $('#modal1').modal('close');
-    var stars = Number($('#starsForm').starRating('getRating'));
-    var comment = $('#newRatingForm').val();
-    var rating = new createNewRating(stars, comment);
-    console.log(rating);
-    console.log(liIndex);
-    addRestaurantRatings(rating, (liIndex+1));
-    $('#starsForm').starRating('setRating', 0);
-    $('#newRatingForm').val('');
+function addnewRestaurantRatings(liIndex){
+    var stars = Number($('#starsForm').starRating('getRating')); // On prend la valeur du nouvel avis
+    var comment = $('#newRatingForm').val(); // On prend la val de l'input
+    var rating = new createNewRating(stars, comment); // On créait un objet rating avec ces valeus
+    addRestaurantRatings(rating, (liIndex+1)); // On ajoute ce nouvel avis au restaurant correspondant
+    $('#starsForm').starRating('setRating', 2.5); // On remet la valeur de base du starRating à 2.5
+    $('#newRatingForm').val(''); // On remet la valeur de l'input du formulaire en vide
+
+    // On recalcule la nouvelle moyenne du restaurant et on met à jours le starRating
+    var sumRatings = 0; 
+    $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').each(function(){
+        sumRatings = sumRatings + Number($(this).starRating('getRating'));
+    })
+    // On arrondi à 0.5 car le plugin ne supporte que des entiers et demis et on met à jours la note moyenne du restaurant
+    var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').length))/2;
+    $('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
 }

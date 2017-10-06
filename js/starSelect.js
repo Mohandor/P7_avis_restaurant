@@ -3,7 +3,7 @@ var starSelect = {
 	init: function(){
 		var starSelectRow = $('<div/>').addClass('row').appendTo($('#starSelection')); // Création d'une row en haut de notre colonne de gauche
 		$('<div/>').addClass('col s12 center-align').text('Ne montrer que les restaurants compris dans cette fourchette').appendTo(starSelectRow);
-		// Création d'une div avec un starRating pour la note minime qui est de base à 0 et ne peut jamais être supérieur à la note max
+		// Création d'une div avec un starRating pour la note minime qui est de base à 0 et ne puisse jamais être supérieur à la note max
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMin').starRating({
 			initialRating: 0,
 			starSize: 20, 
@@ -14,7 +14,7 @@ var starSelect = {
 				}
 			}
 		}).appendTo(starSelectRow);
-		// Création d'une div avec un starRating pour la note maximale qui est de base à 5 et ne peut jamais être inférieur à la note min
+		// Création d'une div avec un starRating pour la note maximale qui est de base à 5 et ne puisse jamais être inférieur à la note min
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMax').starRating({
 			initialRating: 5,
 			starSize: 20,
@@ -34,16 +34,17 @@ var starSelect = {
 		$('#btnStarSelect').on('click', function(){
 			var minStar = Number($('#starMin').starRating('getRating')); // Note minimale
 			var maxStar = Number($('#starMax').starRating('getRating')); // Note maximale
-			// On ajoute une classe 'hide' au restaurant si il n'est pas dans la fourchette et on l'enlève si il est dedans et qu'il l'a
-			$('li').each(function(index){
+			$('li').each(function(index){ // Pour chaque restauant (<li>)
 				var thatStartRating =Number($(this).find('.restaurantAvgRating').starRating('getRating'));
-				if ((thatStartRating<minStar || thatStartRating>maxStar)){
-					$(this).addClass('hide');
-					markers[index].setVisible(false);
+				if ((thatStartRating<minStar || thatStartRating>maxStar)){ // Si le restaurant est en dehors de la fourchette
+					$(this).addClass('hide'); // On ajoute une classe .hide
+					markers[index].setVisible(false); // On fait met le marker en setVisible(false)
 				} else{
+					// Si la <li> a une classe .hide est que le marker est sur la map on enlève la classe et on le met en visible true
 					if($(this).hasClass('hide') && map.getBounds().contains(markers[index].getPosition())){
 						$(this).removeClass('hide');
 						markers[index].setVisible(true);
+					// SI la <li> a une classe .hide mais que le marker n'est pas sur la map on met juste le marker en visible true
 					}else if($(this).hasClass('hide')){
 						markers[index].setVisible(true);
 					};
