@@ -1,6 +1,6 @@
 // Fonction permettant l'ajout d'un restaurant dans une <li>
 function addRestaurant(thatRestau, nbMarker){
-    var li = $('<li/>').addClass('row').appendTo($("ul")); // Création d'une li qui va dans l'ul
+    var li = $('<li/>').addClass('row').attr('tabindex', -1).appendTo($("ul")); // Création d'une li qui va dans l'ul
 
     // Création de la div collapsible-header avec les informations du restaurant
     var liHeader = $('<div/>').addClass('collapsible-header').appendTo(li);
@@ -30,8 +30,9 @@ function addRestaurant(thatRestau, nbMarker){
 // Fonction permettant l'ajout des avis avec un objet ratings et un identifiant(nbMarker)
 function addRestaurantRatings(ratings, nthChildLi){
     var rowRestaurantRatings = $('li:nth-child('+nthChildLi+')').find('.restaurantRatings');
-    $('<div/>').addClass('col s4').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(rowRestaurantRatings);
-    $('<div/>').addClass('col s8').text(ratings.comment).appendTo(rowRestaurantRatings);
+    var colRestaurantRatings = $('<div>').addClass('col s12 colRestaurantRatings').appendTo(rowRestaurantRatings);
+    $('<span/>').addClass('ratingsRestaurant').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(colRestaurantRatings);
+    $('<span/>').addClass('commentsRestaurant').text(ratings.comment).appendTo(colRestaurantRatings);
 }
 
 // Fonction permettant de créer un nouvel objet restaurant

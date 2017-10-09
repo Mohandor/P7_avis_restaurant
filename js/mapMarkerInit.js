@@ -24,5 +24,6 @@ function addMarker(markerPosition, label, title, indexLi){
     // A chaque click on ouvre le collapsible correspondant
     marker.addListener('click', function(){
     $('.collapsible').collapsible('open', indexLi);
+    $('li:nth-child('+label+')').focus();
 });
 }
