@@ -13,6 +13,9 @@ map.addListener('bounds_changed', function(){ // Quand les limites de la map cha
 
 // 
 map.addListener('click', function(event){
+    // On remet les valeurs du modal à 0
+    $('#newRestaurantName').val(''); 
+    $('#newRestaurantAddress').val('');
     var clickPosition = event.latLng; // La position du click
     $('#modal2').modal('open'); // On ouvre le modal d'ajout de restaurant
 
@@ -47,8 +50,59 @@ map.addListener('click', function(event){
             readOnly: true,
             starSize: 20
         });
-        // On remet les valeurs du modal à 0
-        $('#newRestaurantName').val(''); 
-        $('#newRestaurantAddress').val('');
+
     });
 });
+
+// Fonction pour ajouter les restaurants alentours
+function addRestaurantNearby(){
+    mapCenterPosition = map.getCenter();
+    var request = {
+        location: mapCenterPosition,
+        //radius:'500',
+        types: ['restaurant'],
+        rankBy: google.maps.places.RankBy.DISTANCE
+    };
+    function callback(results, status){
+        if(status == google.maps.places.PlacesServiceStatus.OK){
+            $.each(results,function(){
+                var placeID = {placeId: this.place_id};
+                service.getDetails(placeID, function(results, status){
+                    if (status == google.maps.places.PlacesServiceStatus.OK){
+                        var ratings = [];
+                        var restaurantName = results.name;
+                        var address = (results.formatted_address).slice(0, -8);
+                        var lat = results.geometry.location.lat();
+                        var lont = results.geometry.location.lng();
+                        var location = results.geometry.location;
+                        var liIndex = $('li').length;
+                        var nbMarker = (liIndex+1).toString();
+                        var restaurant = new createNewRestaurant(restaurantName, address, lat, lont);
+                        addMarker(location, nbMarker, restaurantName, liIndex);
+                        addRestaurant(restaurant, nbMarker);
+                        var sumRatings = 0;
+                        $.each(results.reviews, function(){
+                            var stars = this.rating;
+                            console.log(stars);
+                            var comment = this.text;
+                            sumRatings = sumRatings + stars ;
+                            var rating = new createNewRating(stars, comment);
+                            addRestaurantRatings(rating, nbMarker);
+                            ratings.push(rating);
+                        });
+                        var avgRatings = Math.round(2*sumRatings/ratings.length)/2;
+                        console.log(avgRatings, sumRatings);
+                        $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
+                            initialRating: avgRatings,
+                            readOnly: true,
+                            starSize: 20
+                        });
+                    }
+                });
+            });
+        }
+    }
+    service.nearbySearch(request, callback);
+}
+
+addRestaurantNearby();

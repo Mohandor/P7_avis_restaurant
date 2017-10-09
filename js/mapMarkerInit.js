@@ -1,12 +1,13 @@
 // On définit deux variables map et geocoder et la fonction d'initiation de la map
-var map, geocoder;
+var map, geocoder, service;
 function initMap(){
 	var OCPosition = {lat: 48.8747648, lng: 2.348376};
-		map = new google.maps.Map(document.getElementById('mapCol'), {
-		zoom: 16,
-		center: OCPosition
+	map = new google.maps.Map(document.getElementById('mapCol'), {
+	zoom: 16,
+	center: OCPosition
 	});
 	geocoder = new google.maps.Geocoder();
+    service = new google.maps.places.PlacesService(map);
 }
 
 // On définit un tableau markers
