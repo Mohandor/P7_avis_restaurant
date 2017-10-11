@@ -59,9 +59,9 @@ function addRestaurantNearby(){
     mapCenterPosition = map.getCenter();
     var request = {
         location: mapCenterPosition,
-        //radius:'500',
+        radius:'1000',
         types: ['restaurant'],
-        rankBy: google.maps.places.RankBy.DISTANCE
+        //rankBy: google.maps.places.RankBy.DISTANCE
     };
     function callback(results, status){
         if(status == google.maps.places.PlacesServiceStatus.OK){
@@ -83,7 +83,6 @@ function addRestaurantNearby(){
                         var sumRatings = 0;
                         $.each(results.reviews, function(){
                             var stars = this.rating;
-                            console.log(stars);
                             var comment = this.text;
                             sumRatings = sumRatings + stars ;
                             var rating = new createNewRating(stars, comment);
@@ -91,7 +90,6 @@ function addRestaurantNearby(){
                             ratings.push(rating);
                         });
                         var avgRatings = Math.round(2*sumRatings/ratings.length)/2;
-                        console.log(avgRatings, sumRatings);
                         $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
                             initialRating: avgRatings,
                             readOnly: true,
