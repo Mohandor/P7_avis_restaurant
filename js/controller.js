@@ -1,7 +1,7 @@
 starSelect.init();
 
 // Call Json à notre fichier test.json où sont stockés les données des restaurants
-$.getJSON('data/test.json', function(data){ 
+$.getJSON('data/restaurant.json', function(data){ 
     $.each(data, function(index){ // Pour chaque objet dans notre fichier
         var nbMarker = (index+1).toString(); // On définit l'id
         var markerPosition = {lat: this.lat, lng: this.long};

@@ -42,7 +42,8 @@ body, html {
 }
 
 .ratingsRestaurant {
-	padding: 0.5rem;
+	padding-right: 1rem;
+	float: left;
 }
 
 .colRestaurantRatings {

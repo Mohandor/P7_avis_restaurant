@@ -13,6 +13,8 @@ map.addListener('bounds_changed', function(){ // Quand les limites de la map cha
 
 // 
 map.addListener('click', function(event){
+    // On unbind le submit et on le relance pour éviter qu'il ajoute plusieurs restaurants après plusieurs clicks et un seul ajout.
+    $('#formRestaurant').unbind('submit').submit();
     // On remet les valeurs du modal à 0
     $('#newRestaurantName').val(''); 
     $('#newRestaurantAddress').val('');
@@ -55,10 +57,9 @@ map.addListener('click', function(event){
 });
 
 // Fonction pour ajouter les restaurants alentours
-function addRestaurantNearby(){
-    mapCenterPosition = map.getCenter();
+function addRestaurantNearby(position){
     var request = {
-        location: mapCenterPosition,
+        location: position,
         radius:'1000',
         types: ['restaurant'],
         //rankBy: google.maps.places.RankBy.DISTANCE
@@ -103,4 +104,4 @@ function addRestaurantNearby(){
     service.nearbySearch(request, callback);
 }
 
-addRestaurantNearby();
+

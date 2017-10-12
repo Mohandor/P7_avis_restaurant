@@ -8,7 +8,7 @@ function initMap(){
 	});
 	geocoder = new google.maps.Geocoder();
     service = new google.maps.places.PlacesService(map);
-    var infoWindow = new google.maps.InfoWindow({map: map});
+    
 
     // Try HTML5 geolocation.
     if (navigator.geolocation) {
@@ -17,10 +17,8 @@ function initMap(){
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
             map.setCenter(pos);
-            addRestaurantNearby();
+            addRestaurantNearby(pos);
         },function() {
                 handleLocationError(true, infoWindow, map.getCenter());
         });
@@ -31,6 +29,7 @@ function initMap(){
     }
 
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        var infoWindow = new google.maps.InfoWindow({map: map});
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
             'Error: The Geolocation service failed.' :

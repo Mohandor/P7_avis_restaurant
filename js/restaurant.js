@@ -31,7 +31,7 @@ function addRestaurant(thatRestau, nbMarker){
 function addRestaurantRatings(ratings, nthChildLi){
     var rowRestaurantRatings = $('li:nth-child('+nthChildLi+')').find('.restaurantRatings');
     var colRestaurantRatings = $('<div>').addClass('col s12 colRestaurantRatings').appendTo(rowRestaurantRatings);
-    $('<span/>').addClass('ratingsRestaurant').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(colRestaurantRatings);
+    $('<div/>').addClass('ratingsRestaurant').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(colRestaurantRatings);
     $('<span/>').addClass('commentsRestaurant').text(ratings.comment).appendTo(colRestaurantRatings);
 }
 
@@ -59,10 +59,10 @@ function addnewRestaurantRatings(liIndex){
 
     // On recalcule la nouvelle moyenne du restaurant et on met à jours le starRating
     var sumRatings = 0; 
-    $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').each(function(){
+    $('li:nth-child('+(liIndex+1)+')').find('.ratingsRestaurant').each(function(){
         sumRatings = sumRatings + Number($(this).starRating('getRating'));
     })
     // On arrondi à 0.5 car le plugin ne supporte que des entiers et demis et on met à jours la note moyenne du restaurant
-    var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.restaurantRatings').children('.s4').length))/2;
+    var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.ratingsRestaurant').length))/2;
     $('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
 }
