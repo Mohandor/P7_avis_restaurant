@@ -11,7 +11,7 @@ map.addListener('bounds_changed', function(){ // Quand les limites de la map cha
     });  
 });
 
-// 
+// Fonction permettant d'ajouter des restaurants en cliquant sur la carte
 map.addListener('click', function(event){
     // On unbind le submit et on le relance pour éviter qu'il ajoute plusieurs restaurants après plusieurs clicks et un seul ajout.
     $('#formRestaurant').unbind('submit').submit();
@@ -50,10 +50,16 @@ map.addListener('click', function(event){
         $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
             initialRating: 0,
             readOnly: true,
-            starSize: 20
+            starSize: starRestaurantsSize
         });
 
     });
+});
+
+// A chaque event 'dragend' on prend la position et on ajoute les restaurants alentours
+map.addListener('dragend', function(){
+    position = map.getCenter();
+    addRestaurantNearby(position);
 });
 
 // Fonction pour ajouter les restaurants alentours
@@ -62,46 +68,29 @@ function addRestaurantNearby(position){
         location: position,
         radius:'1000',
         types: ['restaurant'],
-        //rankBy: google.maps.places.RankBy.DISTANCE
     };
     function callback(results, status){
-        if(status == google.maps.places.PlacesServiceStatus.OK){
-            $.each(results,function(){
-                var placeID = {placeId: this.place_id};
-                service.getDetails(placeID, function(results, status){
-                    if (status == google.maps.places.PlacesServiceStatus.OK){
-                        var ratings = [];
-                        var restaurantName = results.name;
-                        var address = (results.formatted_address).slice(0, -8);
-                        var lat = results.geometry.location.lat();
-                        var lont = results.geometry.location.lng();
-                        var location = results.geometry.location;
-                        var liIndex = $('li').length;
-                        var nbMarker = (liIndex+1).toString();
-                        var restaurant = new createNewRestaurant(restaurantName, address, lat, lont);
-                        addMarker(location, nbMarker, restaurantName, liIndex);
-                        addRestaurant(restaurant, nbMarker);
-                        var sumRatings = 0;
-                        $.each(results.reviews, function(){
-                            var stars = this.rating;
-                            var comment = this.text;
-                            sumRatings = sumRatings + stars ;
-                            var rating = new createNewRating(stars, comment);
-                            addRestaurantRatings(rating, nbMarker);
-                            ratings.push(rating);
-                        });
-                        var avgRatings = Math.round(2*sumRatings/ratings.length)/2;
-                        $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
-                            initialRating: avgRatings,
-                            readOnly: true,
-                            starSize: 20
+        if(status == google.maps.places.PlacesServiceStatus.OK){ // Si ça fonctionne
+            $.each(results,function(){ // Pour chaque résultat
+                var placeID = {placeId: this.place_id}; // On définit le place_id
+                service.getDetails(placeID, function(results, status){ // On fait un getDetails pour avoir plus d'information
+                    if (status == google.maps.places.PlacesServiceStatus.OK){ // Si ça fonctionne
+                        var position = results.geometry.location; // On définit les coordonnées du restaurant
+                        // On ne créait le restaurant que si il n'y a pas déjà de marker à cette position
+                        var doesItExist = false;
+                        $.each(markers, function(index){
+                            if(this.getPosition().equals(position)){
+                                doesItExist = true;
+                            }
+                            // Si après avoir vérifier chaque marker et qu'il n'y en a pas déjà un à cet endroit on ajoute le restaurant
+                            if(((index+1) === markers.length) && (doesItExist === false)){
+                                addRestaurantWithSearch(position, results)
+                            }
                         });
                     }
                 });
             });
         }
-    }
+    };
     service.nearbySearch(request, callback);
 }
-
-

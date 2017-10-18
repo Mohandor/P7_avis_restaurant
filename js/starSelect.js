@@ -2,11 +2,11 @@ var starSelect = {
 	// Fonction créant l'outil permettant le tri des restaurants en fonctions des notes
 	init: function(){
 		var starSelectRow = $('<div/>').addClass('row').appendTo($('#starSelection')); // Création d'une row en haut de notre colonne de gauche
-		$('<div/>').addClass('col s12 center-align').text('Ne montrer que les restaurants compris dans cette fourchette').appendTo(starSelectRow);
+		$('<div/>').addClass('col s12 center-align').text(textSelect).appendTo(starSelectRow);
 		// Création d'une div avec un starRating pour la note minime qui est de base à 0 et ne puisse jamais être supérieur à la note max
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMin').starRating({
 			initialRating: 0,
-			starSize: 20, 
+			starSize: starSelectSize, 
 			disableAfterRate: false,
 			callback: function(currentRating, $el){
 				if(currentRating > Number($('#starMax').starRating('getRating'))){
@@ -17,7 +17,7 @@ var starSelect = {
 		// Création d'une div avec un starRating pour la note maximale qui est de base à 5 et ne puisse jamais être inférieur à la note min
 		$('<div/>').addClass('col s6 center-align').attr('id', 'starMax').starRating({
 			initialRating: 5,
-			starSize: 20,
+			starSize: starSelectSize,
 			disableAfterRate: false,
 			callback: function(currentRating, $el){
 				if(currentRating < Number($('#starMin').starRating('getRating'))){
@@ -27,7 +27,7 @@ var starSelect = {
 		}).appendTo(starSelectRow);
 		// Ajout du bouton pour effectuer le tri
 		var divBtnStarSelect = $('<div/>').addClass('col s12 center-align divBtnStarSelect').appendTo(starSelectRow);
-		$('<a/>').addClass('waves-effect waves-light btn').attr('id', "btnStarSelect").text('Classer').appendTo(divBtnStarSelect);
+		$('<a/>').addClass('waves-effect waves-light btn').attr('id', "btnStarSelect").text(textBtnSelect).appendTo(divBtnStarSelect);
 		$('<i/>').addClass('material-icons right').text('restaurant').appendTo($('#btnStarSelect'));
 
 		// Fonction de l'event quand on clique sur le bouton

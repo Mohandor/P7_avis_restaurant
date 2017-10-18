@@ -22,6 +22,7 @@
             <div class="col s9" id="mapCol"></div>
         </div>
 
+        <!-- Modal qui permet d'ajouter un avis aux restaurants -->
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <h4>Ajouter un avis</h4>
@@ -42,6 +43,7 @@
             </div>
         </div>
 
+        <!-- Modal qui permet d'ajouter des restaurants quand on clique sur la map -->
         <div id="modal2" class="modal">
             <div class="modal-content">
                 <h4>Ajouter un restaurant</h4>
@@ -53,7 +55,7 @@
                                 <label for="newRestaurantName">Nom du restaurant</label>
                             </div>
                             <div class="input-field col s12">
-                                <input placeholder=" " id="newRestaurantAddress" type="text" class="validate" required>
+                                <input placeholder=" " disabled id="newRestaurantAddress" type="text" class="validate" required>
                                 <label for="newRestaurantAddress">Adresse du restaurant</label>
                             </div>
                         </div>     
@@ -68,6 +70,7 @@
         <script src="js/lib/jquery-3.2.1.min.js"></script>
         <script src="js/lib/materialize.min.js"></script>
         <script src="js/lib/jquery.star-rating-svg.min.js"></script>
+        <script src="js/settings.js"></script>
         <script src="js/mapMarkerInit.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&libraries=places&callback=initMap"></script>
         <script src="js/restaurant.js"></script>

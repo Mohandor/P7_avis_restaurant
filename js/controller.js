@@ -1,7 +1,8 @@
+// On initie le sélecteur de restaurants en fonction des notes
 starSelect.init();
 
 // Call Json à notre fichier test.json où sont stockés les données des restaurants
-$.getJSON('data/restaurant.json', function(data){ 
+$.getJSON(jsonFile, function(data){ 
     $.each(data, function(index){ // Pour chaque objet dans notre fichier
         var nbMarker = (index+1).toString(); // On définit l'id
         var markerPosition = {lat: this.lat, lng: this.long};
@@ -16,7 +17,7 @@ $.getJSON('data/restaurant.json', function(data){
         $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
             initialRating: avgRatings,
             readOnly: true,
-            starSize: 20
+            starSize: starRestaurantsSize
         });
     });
 });

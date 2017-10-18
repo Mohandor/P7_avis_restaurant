@@ -31,7 +31,7 @@ function addRestaurant(thatRestau, nbMarker){
 function addRestaurantRatings(ratings, nthChildLi){
     var rowRestaurantRatings = $('li:nth-child('+nthChildLi+')').find('.restaurantRatings');
     var colRestaurantRatings = $('<div>').addClass('col s12 colRestaurantRatings').appendTo(rowRestaurantRatings);
-    $('<div/>').addClass('ratingsRestaurant').starRating({initialRating: ratings.stars, readOnly: true, starSize: 12}).appendTo(colRestaurantRatings);
+    $('<div/>').addClass('ratingsRestaurant').starRating({initialRating: ratings.stars, readOnly: true, starSize: starRatingsSize}).appendTo(colRestaurantRatings);
     $('<span/>').addClass('commentsRestaurant').text(ratings.comment).appendTo(colRestaurantRatings);
 }
 
@@ -65,4 +65,58 @@ function addnewRestaurantRatings(liIndex){
     // On arrondi à 0.5 car le plugin ne supporte que des entiers et demis et on met à jours la note moyenne du restaurant
     var avgRatings = Math.round(2*(sumRatings / $('li:nth-child('+(liIndex+1)+')').find('.ratingsRestaurant').length))/2;
     $('li:nth-child('+(liIndex+1)+')').find('.restaurantAvgRating').starRating('setRating', avgRatings);
+
+    // On vérifie que le restaurant soit dans la fourchette de recherche et on le cache si ce n'est plus le cas
+    var minStar = Number($('#starMin').starRating('getRating')); // Note minimale
+    var maxStar = Number($('#starMax').starRating('getRating')); // Note maximale
+    if ((avgRatings<minStar || avgRatings>maxStar)){ // Si le restaurant est en dehors de la fourchette
+        $('li:nth-child('+(liIndex+1)+')').addClass('hide'); // On ajoute une classe .hide
+        markers[liIndex].setVisible(false); // On fait met le marker en setVisible(false)
+    }
+}
+
+// Fonction permettant l'ajout des restaurants avec la recherche de google Places
+function addRestaurantWithSearch(position, results){
+    var ratings = []; // on créait un tableau ratings
+    var restaurantName = results.name; // Le nom
+    var address = (results.formatted_address).slice(0, -8); // L'adresse minus le ", France"
+    var lat = results.geometry.location.lat(); // La lat 
+    var lont = results.geometry.location.lng(); // la long
+    var liIndex = $('li').length; // L'index de la li qu'on va créer
+    var nbMarker = (liIndex+1).toString(); // Le numéro du marker 
+    var restaurant = new createNewRestaurant(restaurantName, address, lat, lont); // On créait l'objet restaurant
+    addMarker(position, nbMarker, restaurantName, liIndex); // On ajoute le marker
+    addRestaurant(restaurant, nbMarker); // On ajoute le restaurant
+    // Si il y a des avis on les ajoutes au restaurant et on calcule la note moyenne qu'on affiche
+    if ($.type(results.reviews) === "array"){
+        var sumRatings = 0;
+        $.each(results.reviews, function(){
+            var stars = this.rating;
+            var comment = this.text;
+            sumRatings = sumRatings + stars;
+            var rating = new createNewRating(stars, comment);
+            addRestaurantRatings(rating, nbMarker);
+            ratings.push(rating);
+        });
+        var avgRatings = Math.round(2*sumRatings/ratings.length)/2;
+        $('li').last().find('.restaurantAvgRating').starRating({ // Ajout de la note moyenne à ce restaurant
+            initialRating: avgRatings,
+            readOnly: true,
+            starSize: starRestaurantsSize
+        });        
+    } else { // Sinon on initie le plugin avec un initialRating à 0
+        $('li').last().find('.restaurantAvgRating').starRating({ 
+            initialRating: 0,
+            readOnly: true,
+            starSize: starRestaurantsSize
+        });        
+    }
+    // Si le restaurant n'est pas dans la fourchette de la recherche on le cache
+    var minStar = Number($('#starMin').starRating('getRating')); // Note minimale
+    var maxStar = Number($('#starMax').starRating('getRating')); // Note maximale
+    var thatStartRating =Number( $('li').last().find('.restaurantAvgRating').starRating('getRating'));
+    if ((thatStartRating<minStar || thatStartRating>maxStar)){ // Si le restaurant est en dehors de la fourchette
+        $('li').last().addClass('hide'); // On ajoute une classe .hide
+        markers[liIndex].setVisible(false); // On fait met le marker en setVisible(false)
+    }
 }

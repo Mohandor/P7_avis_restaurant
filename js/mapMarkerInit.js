@@ -1,16 +1,15 @@
 // On définit deux variables map et geocoder et la fonction d'initiation de la map
 var map, geocoder, service;
 function initMap(){
-	var OCPosition = {lat: 48.8747648, lng: 2.348376};
 	map = new google.maps.Map(document.getElementById('mapCol'), {
-	zoom: 16,
-	center: OCPosition
+	zoom: defaultZoom,
+	center: defaultPosition
 	});
 	geocoder = new google.maps.Geocoder();
     service = new google.maps.places.PlacesService(map);
     
 
-    // Try HTML5 geolocation.
+    // On essaye la geolocation, si ça marche on positionne la map à cet endroit et on appelle la fonction pour y ajouter les restaurants alentours
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var pos = {
