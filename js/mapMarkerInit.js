@@ -18,6 +18,12 @@ function initMap(){
             };
             map.setCenter(pos);
             addRestaurantNearby(pos);
+            var marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: 'Vous êtes ici',
+                icon: 'http://maps.google.com/mapfiles/arrow.png'
+            });
         },function() {
                 handleLocationError(true, infoWindow, map.getCenter());
         });
