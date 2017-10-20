@@ -1,3 +1,5 @@
+/*1-General*/
+
  #mapCol {
  	height: 100vh;
 }
@@ -7,7 +9,6 @@
 	max-height: 100vh;
 }
 
-
 @media screen and (max-width: 992px){
 	 #mapCol {
 	 	height: 35vh;
@@ -15,6 +16,7 @@
 
 	.leftCol{
 		max-height: 62vh;
+	}
 }
 
 body, html {
@@ -22,13 +24,24 @@ body, html {
   width: 100%;
 }
 
-.row .col.s3.padding0 {
-	padding: 0;
+.btn {
+	padding: 0 1rem;
 }
 
-.row .col.S4.streetview{
-	width: 100%;
-	height: auto;
+/*2 - Star Select*/
+
+#starSelection .row{
+	margin: 1rem 0;
+}
+
+#starMin, #starMax{
+	padding: 0.5rem 0;
+}
+
+/*3 - Restaurant Col*/
+
+.padding0 {
+	padding: 0 0.3rem !important;
 }
 
 .streetview{
@@ -37,18 +50,6 @@ body, html {
 
 .collapsible-header i{
 	margin: 0;
-}
-
-.btn {
-	padding: 0 1rem;
-}
-
-.row .col.s12.divBtnAddRestaurant{
-	padding: 0.5rem;
-}
-
-#starSelection .row{
-	margin: 1rem 0;
 }
 
 .ratingsRestaurant {
