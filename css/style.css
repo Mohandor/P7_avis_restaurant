@@ -7,6 +7,16 @@
 	max-height: 100vh;
 }
 
+
+@media screen and (max-width: 992px){
+	 #mapCol {
+	 	height: 35vh;
+	}
+
+	.leftCol{
+		max-height: 62vh;
+}
+
 body, html {
   height: 100%;
   width: 100%;

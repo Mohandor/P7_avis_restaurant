@@ -4,7 +4,7 @@ var starSelect = {
 		var starSelectRow = $('<div/>').addClass('row').appendTo($('#starSelection')); // Création d'une row en haut de notre colonne de gauche
 		$('<div/>').addClass('col s12 center-align').text(textSelect).appendTo(starSelectRow);
 		// Création d'une div avec un starRating pour la note minime qui est de base à 0 et ne puisse jamais être supérieur à la note max
-		$('<div/>').addClass('col s6 center-align').attr('id', 'starMin').starRating({
+		$('<div/>').addClass('col s12 m6 center-align').attr('id', 'starMin').starRating({
 			initialRating: 0,
 			starSize: starSelectSize, 
 			disableAfterRate: false,
@@ -15,7 +15,7 @@ var starSelect = {
 			}
 		}).appendTo(starSelectRow);
 		// Création d'une div avec un starRating pour la note maximale qui est de base à 5 et ne puisse jamais être inférieur à la note min
-		$('<div/>').addClass('col s6 center-align').attr('id', 'starMax').starRating({
+		$('<div/>').addClass('col s12 m6 center-align').attr('id', 'starMax').starRating({
 			initialRating: 5,
 			starSize: starSelectSize,
 			disableAfterRate: false,

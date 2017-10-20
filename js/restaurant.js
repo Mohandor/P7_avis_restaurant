@@ -4,7 +4,7 @@ function addRestaurant(thatRestau, nbMarker){
 
     // Création de la div collapsible-header avec les informations du restaurant
     var liHeader = $('<div/>').addClass('collapsible-header').appendTo(li);
-    var leftCol = $('<div/>').addClass('col s8').appendTo(liHeader);
+    var leftCol = $('<div/>').addClass('col m8 s12').appendTo(liHeader);
     var leftRow = $('<div/>').addClass('row').appendTo(leftCol);
     $('<div/>').addClass('col s1').text(nbMarker).appendTo(leftRow);
     $('<div/>').addClass('col s10').text(thatRestau.restaurantName).appendTo(leftRow);
@@ -17,7 +17,7 @@ function addRestaurant(thatRestau, nbMarker){
 
     // Ajout de l'image google street aux coordonnées qui va dans l'header
     var restaurantLocation = "location="+thatRestau.lat+","+thatRestau.long;
-    var rightCol = $('<div/>').addClass('col s4 valign-wrapper').appendTo(liHeader);
+    var rightCol = $('<div/>').addClass('col m4 valign-wrapper hide-on-small-only').appendTo(liHeader);
     $('<img>').addClass('streetview').attr('src', '//maps.googleapis.com/maps/api/streetview?size=400x400&key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&'+restaurantLocation).appendTo(rightCol);
    
     // Ajout du body de notre collapsible pour les notes
