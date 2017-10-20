@@ -54,7 +54,7 @@ function addMarker(markerPosition, label, title, indexLi){
         title: title,
         map: map
     });
-    markers.push(marker); // Le marker est pushé dans notre talbeau
+    markers.push(marker); // Le marker est mis dans notre talbeau
     // A chaque click on ouvre le collapsible correspondant
     marker.addListener('click', function(){
     $('.collapsible').collapsible('open', indexLi);

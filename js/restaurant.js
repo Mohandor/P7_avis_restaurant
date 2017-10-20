@@ -17,7 +17,7 @@ function addRestaurant(thatRestau, nbMarker){
 
     // Ajout de l'image google street aux coordonnées qui va dans l'header
     var restaurantLocation = "location="+thatRestau.lat+","+thatRestau.long;
-    var rightCol = $('<div/>').addClass('col m4 valign-wrapper hide-on-small-only').appendTo(liHeader);
+    var rightCol = $('<div/>').addClass('col m4 valign-wrapper colStreetview hide-on-small-only').appendTo(liHeader);
     $('<img>').addClass('streetview').attr('src', '//maps.googleapis.com/maps/api/streetview?size=400x400&key=AIzaSyB48K7MnLGjHOLRg8YlZVgGg2kIj2zNrXU&'+restaurantLocation).appendTo(rightCol);
    
     // Ajout du body de notre collapsible pour les notes

@@ -48,6 +48,10 @@ body, html {
 	width: 100%;
 }
 
+.colStreetview{
+	padding: 0 !important;
+}
+
 .collapsible-header i{
 	margin: 0;
 }
